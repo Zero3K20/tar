@@ -146,6 +146,21 @@ GLOBAL const char *use_compress_program_option;
 GLOBAL bool dereference_option;
 GLOBAL bool hard_dereference_option;
 
+/* Convert symbolic and hard links to copies when extracting */
+GLOBAL bool copy_links_option;
+
+/* Structure to store link information for deferred resolution */
+struct deferred_link
+{
+  struct deferred_link *next;
+  char *link_path;      /* Path where the link should be created */
+  char *target_path;    /* Target path the link points to */
+  bool is_hard_link;    /* true for hard links, false for symlinks */
+};
+
+/* List of links to resolve after extraction */
+GLOBAL struct deferred_link *deferred_links;
+
 /* Patterns that match file names to be excluded.  */
 GLOBAL struct exclude *excluded;
 
@@ -901,6 +916,11 @@ void xattr_map_copy (struct xattr_map *dst,
 void xattr_map_add (struct xattr_map *map,
 		    const char *key, const char *val, size_t len);
 void xattr_map_free (struct xattr_map *xattr_map);
+
+/* Link copy functionality */
+void add_deferred_link (const char *link_path, const char *target_path, bool is_hard_link);
+void resolve_deferred_links (void);
+void free_deferred_links (void);
 
 /* Module system.c */
 

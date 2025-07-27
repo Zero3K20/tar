@@ -277,6 +277,7 @@ enum
   CHECKPOINT_OPTION,
   CHECKPOINT_ACTION_OPTION,
   CLAMP_MTIME_OPTION,
+  COPY_LINKS_OPTION,
   DELAY_DIRECTORY_RESTORE_OPTION,
   HARD_DEREFERENCE_OPTION,
   DELETE_OPTION,
@@ -743,6 +744,9 @@ static struct argp_option options[] = {
    GRID_FILE },
   {"hard-dereference", HARD_DEREFERENCE_OPTION, 0, 0,
    N_("follow hard links; archive and dump the files they refer to"),
+   GRID_FILE },
+  {"copy-links", COPY_LINKS_OPTION, 0, 0,
+   N_("copy symlinks and hard links as regular files when extracting"),
    GRID_FILE },
   {"starting-file", 'K', N_("MEMBER-NAME"), 0,
    N_("begin at member MEMBER-NAME when reading the archive"),
@@ -1536,6 +1540,10 @@ parse_opt (int key, char *arg, struct argp_state *state)
 
     case HARD_DEREFERENCE_OPTION:
       hard_dereference_option = true;
+      break;
+
+    case COPY_LINKS_OPTION:
+      copy_links_option = true;
       break;
 
     case 'i':
