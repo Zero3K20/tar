@@ -136,6 +136,25 @@ to a value from the table below, before configuration (see 'INSTALL').
 	Solaris		(vendor)	-Bstatic
 	SunOS		(vendor)	-Bstatic
 
+** Visual Studio 2019 (x86).
+
+GNU 'tar' can be built with the Visual C compiler using the Autotools
+build system.  Install MSYS2 with its base-devel package for the shell,
+make, and binutils, then open the Visual Studio 2019 x86 Native Tools
+Command Prompt and start the MSYS2 shell from it.  This makes the x86
+Visual C compiler available to the build.
+
+From the MSYS2 shell, run:
+
+   CC=cl CFLAGS=/MT AR=ar RANLIB=ranlib sh configure \
+     --disable-gcc-warnings --disable-nls --without-posix-acls
+   make
+
+The '/MT' option links the multithreaded C runtime statically, so the
+executable does not need the Visual C runtime DLLs to be distributed with
+it.  The executable is created as 'src/tar.exe'.  Windows system DLLs are
+still provided by Windows itself.
+
 ** Failed tests 'ignfail.sh' or 'incremen.sh'.
 
 In an NFS environment, lack of synchronization between machine clocks
